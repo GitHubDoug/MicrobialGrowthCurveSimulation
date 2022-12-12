@@ -9,8 +9,8 @@ Demonstration plots of microbial growth curves for examinations and assignments
 ```{r load libraries}
 library(tidyverse)
 ```
-```{r generate data}
 
+```{r generate data}
 PA0 <- 100
 PAMax <- 2000
 PAmu <- log(2)
@@ -29,8 +29,8 @@ GrowthData %>%
   geom_point(aes(x = Day, y = PtA)) +
   geom_line(aes(x = Day, y = PtA)) +
   scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
-  scale_y_continuous(limits = c(0,2000), breaks = seq(from=min(0),
-              to=max(2000), by = 100)) + 
+  scale_y_continuous(limits = c(0,PAMax), breaks = seq(from=min(0),
+              to=max(PAMax), by = 100)) + 
   theme_bw()
 
 ```
@@ -41,8 +41,8 @@ GrowthData %>%
   geom_point(aes(x = Day, y = PtALag)) +
   geom_line(aes(x = Day, y = PtALag)) +
   scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
-  scale_y_continuous(limits = c(0,2000), breaks = seq(from=min(0),
-              to=max(2000), by = 100)) + 
+  scale_y_continuous(limits = c(0,PAMax), breaks = seq(from=min(0),
+              to=max(PAMax), by = 100)) + 
   theme_bw()
 
 ```
