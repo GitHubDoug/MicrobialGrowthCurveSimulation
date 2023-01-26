@@ -29,3 +29,6 @@ vignettes/*.pdf
 
 # MacOS .DS_store
 .DS_Store
+
+# .html
+.html
