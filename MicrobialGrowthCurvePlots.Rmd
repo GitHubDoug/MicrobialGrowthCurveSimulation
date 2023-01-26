@@ -27,7 +27,9 @@ GrowthData <- GrowthData %>%
   mutate(PtA = (PAMax * (PA0*exp(Day*PAmu))) /(PAMax + (PA0 * (exp(PAmu * Day) - 1)))) %>%
   mutate(PtALag = if_else(Day < PAlag, PA0, (PAMax * (PA0*exp((Day-PAlag)*PAmu))) /(PAMax + (PA0 * (exp(PAmu * (Day-PAlag)) - 1))))) %>%
   mutate(PtB = (PBMax * (PB0*exp(Day*PBmu))) /(PBMax + (PB0 * (exp(PBmu * Day) - 1)))) %>%
-  mutate(PtBLag = if_else(Day < PBlag, PB0, (PBMax * (PB0*exp((Day-PBlag)*PBmu))) /(PBMax + (PB0 * (exp(PBmu * (Day-PBlag)) - 1)))))
+  mutate(PtBLag = if_else(Day < PBlag, PB0, (PBMax * (PB0*exp((Day-PBlag)*PBmu))) /(PBMax + (PB0 * (exp(PBmu * (Day-PBlag)) - 1))))) |>
+  mutate(DayVar = rnorm(n = length(Day), mean = Day, sd = Day *0.2),
+    PtAVar = rnorm(n = length(PtA), mean = PtA, sd = PtA *0.2))
 ```
 
 ```{r PtA plot}
@@ -57,6 +59,20 @@ GrowthData %>%
 
 ggsave(
   "logPtAPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
+
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = DayVar, y = PtAVar)) +
+  geom_line(aes(x = DayVar, y = PtAVar)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) + 
+  theme_bw()
+
+ggsave(
+  "PtAVarPlot.png",
   plot = last_plot(),
   path = file.path("Plots")
 )
