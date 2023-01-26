@@ -12,15 +12,22 @@ library(tidyverse)
 
 ```{r generate data}
 PA0 <- 100
-PAMax <- 2000
+PAMax <- 3000
 PAmu <- log(2)
 PAlag <- 2
+
+PB0 <- 50
+PBMax <- 1000
+PBmu <- log(2)
+PBlag <- 3
 
 GrowthData <- tibble(Day = c(0,1,2,3,4,5,6,7,8,9,10))
 
 GrowthData <- GrowthData %>%
   mutate(PtA = (PAMax * (PA0*exp(Day*PAmu))) /(PAMax + (PA0 * (exp(PAmu * Day) - 1)))) %>%
-  mutate(PtALag = if_else(Day < PAlag, PA0, (PAMax * (PA0*exp((Day-2)*PAmu))) /(PAMax + (PA0 * (exp(PAmu * (Day-2)) - 1)))))
+  mutate(PtALag = if_else(Day < PAlag, PA0, (PAMax * (PA0*exp((Day-PAlag)*PAmu))) /(PAMax + (PA0 * (exp(PAmu * (Day-PAlag)) - 1))))) %>%
+  mutate(PtB = (PBMax * (PB0*exp(Day*PBmu))) /(PBMax + (PB0 * (exp(PBmu * Day) - 1)))) %>%
+  mutate(PtBLag = if_else(Day < PBlag, PB0, (PBMax * (PB0*exp((Day-PBlag)*PBmu))) /(PBMax + (PB0 * (exp(PBmu * (Day-PBlag)) - 1)))))
 ```
 
 ```{r PtA plot}
@@ -28,12 +35,51 @@ GrowthData %>%
   ggplot() +
   geom_point(aes(x = Day, y = PtA)) +
   geom_line(aes(x = Day, y = PtA)) +
-  scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
-  scale_y_continuous(limits = c(0,PAMax), breaks = seq(from=min(0),
-              to=max(PAMax), by = 100)) + 
+  scale_x_continuous(expand = c(0,0), limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,PAMax), breaks = seq(from=min(0),
+              to=max(PAMax), by = 200)) + 
   theme_bw()
 
+ggsave(
+  "PtAPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
+
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = log(PtA))) +
+  geom_line(aes(x = Day, y = log(PtA))) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,log(PAMax)), breaks = seq(from=min(0),
+              to=max(PAMax), by = 200)) + 
+  theme_bw()
+
+ggsave(
+  "logPtAPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
 ```
+
+```{r save non-lag plots}
+ggsave(
+  filename,
+  plot = last_plot(),
+  device = NULL,
+  path = NULL,
+  scale = 1,
+  width = NA,
+  height = NA,
+  units = c("in", "cm", "mm", "px"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = NULL,
+  ...
+)
+```
+
+
 
 ```{r PtALag plot}
 GrowthData %>%
@@ -43,6 +89,31 @@ GrowthData %>%
   scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
   scale_y_continuous(limits = c(0,PAMax), breaks = seq(from=min(0),
               to=max(PAMax), by = 100)) + 
+  theme_bw()
+
+```
+
+
+```{r PtB plot}
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = PtB)) +
+  geom_line(aes(x = Day, y = PtB)) +
+  scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(limits = c(0,PBMax), breaks = seq(from=min(0),
+              to=max(PBMax), by = 100)) + 
+  theme_bw()
+
+```
+
+```{r PtBLag plot}
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = PtBLag)) +
+  geom_line(aes(x = Day, y = PtBLag)) +
+  scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(limits = c(0,PBMax), breaks = seq(from=min(0),
+              to=max(PBMax), by = 100)) + 
   theme_bw()
 
 ```
