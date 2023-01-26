@@ -1,7 +1,6 @@
 ---
 title: "Microbial Growth Curve Plots"
 author: Douglas A. Campbell
-output: html_notebook
 ---
 
 Demonstration plots of microbial growth curves for examinations and assignments
