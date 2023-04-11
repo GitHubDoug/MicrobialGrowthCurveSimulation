@@ -39,7 +39,7 @@ GrowthData %>%
   scale_x_continuous(expand = c(0,0), limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
   scale_y_continuous(expand = c(0,0), limits = c(0,PAMax), breaks = seq(from=min(0),
               to=max(PAMax), by = 200)) + 
-  theme_bw()
+   theme_bw(base_size = 14)
 
 ggsave(
   "PtAPlot.png",
@@ -54,7 +54,7 @@ GrowthData %>%
   geom_smooth(data = subset(GrowthData, DayVar <= 4), aes(x = DayVar, y = log(PtA)), method = "lm") +
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0)) + 
-  theme_bw()
+  theme_bw(base_size = 14)
 
 ggsave(
   "logPtAPlot.png",
@@ -68,7 +68,7 @@ GrowthData %>%
   geom_line(aes(x = DayVar, y = PtAVar)) +
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0)) + 
-  theme_bw()
+  theme_bw(base_size = 14)
 
 ggsave(
   "PtAVarPlot.png",
@@ -82,7 +82,7 @@ GrowthData %>%
   geom_smooth(aes(x = DayVar, y = log(PtAVar)), method = "lm") +
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0)) + 
-  theme_bw()
+  theme_bw(base_size = 14)
 
 ggsave(
   "logPtAVarPlot.png",
