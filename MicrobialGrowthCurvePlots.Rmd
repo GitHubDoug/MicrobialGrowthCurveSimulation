@@ -11,14 +11,14 @@ library(tidyverse)
 
 ```{r generate data}
 PA0 <- 10
-PAMax <- 1000
+PAMax <- 200
 PAmu <- log(2)
 PAlag <- 2
 
 PB0 <- 20
-PBMax <- 1000
+PBMax <- 500
 PBmu <- log(2)
-PBlag <- 3
+PBlag <- 4
 
 GrowthData <- tibble(Day = c(0,1,2,3,4,5,6,7,8,9,10))
 
