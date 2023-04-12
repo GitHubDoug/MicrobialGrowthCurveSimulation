@@ -28,7 +28,8 @@ GrowthData <- GrowthData %>%
   mutate(PtB = (PBMax * (PB0*exp(Day*PBmu))) /(PBMax + (PB0 * (exp(PBmu * Day) - 1)))) %>%
   mutate(PtBLag = if_else(Day < PBlag, PB0, (PBMax * (PB0*exp((Day-PBlag)*PBmu))) /(PBMax + (PB0 * (exp(PBmu * (Day-PBlag)) - 1))))) |>
   mutate(DayVar = rnorm(n = length(Day), mean = Day, sd = Day *0.2),
-    PtAVar = rnorm(n = length(PtA), mean = PtA, sd = PtA *0.2))
+    PtAVar = rnorm(n = length(PtA), mean = PtA, sd = PtA *0.2),
+    PtBLagVar = rnorm(n = length(PtBLag), mean = PtBLag, sd = PtBLag *0.1))
 ```
 
 ```{r PtA plot}
@@ -128,4 +129,42 @@ GrowthData %>%
               to=max(PBMax), by = 100)) + 
   theme_bw()
 
+```
+
+
+```{r PtBLagVar plot}
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = PtBLagVar)) +
+  geom_line(aes(x = Day, y = PtBLagVar)) +
+  scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(limits = c(0,PBMax), breaks = seq(from=min(0),
+              to=max(PBMax), by = 100)) + 
+  theme_bw()
+
+ggsave(
+  "PtBLagVarPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
+
+```
+
+
+```{r PtBLagVar plot}
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = log(PtBLagVar))) +
+  geom_line(aes(x = Day, y = log(PtBLagVar))) +
+  scale_x_continuous(limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  #scale_y_continuous(limits = c(0,PBMax), breaks = seq(from=min(0),
+             # to=max(PBMax), by = 100)) + 
+  theme_bw()
+
+
+ggsave(
+  "logPtBVarPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
 ```
