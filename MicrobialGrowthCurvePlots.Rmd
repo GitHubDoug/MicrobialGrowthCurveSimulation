@@ -52,7 +52,7 @@ GrowthData %>%
   ggplot() +
   geom_point(aes(x = Day, y = log(PtA))) +
   geom_smooth(aes(x = DayVar, y = log(PtA)), method = "lm") +
-  geom_smooth(data = subset(GrowthData, DayVar <= 4), aes(x = DayVar, y = log(PtA)), method = "lm") +
+  #geom_smooth(data = subset(GrowthData, DayVar <= 4), aes(x = DayVar, y = log(PtA)), method = "lm") +
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0)) + 
   theme_bw(base_size = 14)
@@ -80,7 +80,7 @@ ggsave(
 GrowthData %>%
   ggplot() +
   geom_point(aes(x = DayVar, y = log(PtAVar))) +
-  geom_smooth(aes(x = DayVar, y = log(PtAVar)), method = "lm") +
+  #geom_smooth(aes(x = DayVar, y = log(PtAVar)), method = "lm") +
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0)) + 
   theme_bw(base_size = 14)
