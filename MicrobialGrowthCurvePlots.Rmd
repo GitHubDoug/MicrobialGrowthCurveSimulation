@@ -11,14 +11,14 @@ library(tidyverse)
 
 ```{r generate data}
 PA0 <- 10
-PAMax <- 200
-PAmu <- log(2)
-PAlag <- 2
+PAMax <- 300
+PAmu <- log(6)
+PAlag <- 0
 
 PB0 <- 20
 PBMax <- 500
-PBmu <- log(2)
-PBlag <- 4
+PBmu <- log(4)
+PBlag <- 2
 
 GrowthData <- tibble(Day = c(0,1,2,3,4,5,6,7,8,9,10))
 
@@ -27,10 +27,33 @@ GrowthData <- GrowthData %>%
   mutate(PtALag = if_else(Day < PAlag, PA0, (PAMax * (PA0*exp((Day-PAlag)*PAmu))) /(PAMax + (PA0 * (exp(PAmu * (Day-PAlag)) - 1))))) %>%
   mutate(PtB = (PBMax * (PB0*exp(Day*PBmu))) /(PBMax + (PB0 * (exp(PBmu * Day) - 1)))) %>%
   mutate(PtBLag = if_else(Day < PBlag, PB0, (PBMax * (PB0*exp((Day-PBlag)*PBmu))) /(PBMax + (PB0 * (exp(PBmu * (Day-PBlag)) - 1))))) |>
-  mutate(DayVar = rnorm(n = length(Day), mean = Day, sd = Day *0.2),
-    PtAVar = rnorm(n = length(PtA), mean = PtA, sd = PtA *0.2),
+  mutate(DayVar = rnorm(n = length(Day), mean = Day, sd = Day *0.1),
+    PtAVar = rnorm(n = length(PtA), mean = PtA, sd = PtA *0.1),
+    PtALagVar = rnorm(n = length(PtALag), mean = PtALag, sd = PtALag *0.1),
     PtBLagVar = rnorm(n = length(PtBLag), mean = PtBLag, sd = PtBLag *0.1))
 ```
+
+```{r PtAlagPtBlag plot}
+GrowthData %>%
+  ggplot() +
+  geom_point(aes(x = Day, y = PtALagVar)) +
+  #geom_line(aes(x = Day, y = PtALag)) +
+  geom_point(aes(x = Day, y = PtBLagVar), colour = "red") +
+  #geom_line(aes(x = Day, y = PtBLag)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0,max(GrowthData$Day)), breaks = round(seq(0,10))) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,max(PAMax, PBMax)), breaks = seq(from=min(0),
+              to=max(PAMax, PBMax), by = 200)) + 
+  labs(y = "Cells mL-1") +
+   theme_bw(base_size = 14)
+
+ggsave(
+  "logPtALagPtBLagPlot.png",
+  plot = last_plot(),
+  path = file.path("Plots")
+)
+
+```
+
 
 ```{r PtA plot}
 GrowthData %>%
