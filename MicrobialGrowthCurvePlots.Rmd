@@ -12,7 +12,7 @@ library(tidyverse)
 ```{r generate data}
 PA0 <- 10
 PAMax <- 300
-PAmu <- log(6)
+PAmu <- log(4)
 PAlag <- 0
 
 PB0 <- 20
